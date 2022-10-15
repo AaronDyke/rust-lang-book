@@ -13,20 +13,15 @@ const TWELVE_DAYS_OF_CHRISTMAS: [(&str, &str); 12] = [
     ("twelfth", "Twelve drummers drumming"),
 ];
 
-fn main() {     
-    let mut index_of_christmas = 0;
-    loop {
-        if index_of_christmas == 12 {
-            break;
-        }
+fn main() {
+    for (i, day_of_christmas) in TWELVE_DAYS_OF_CHRISTMAS.iter().enumerate() {
         println!(
             "On the {} day of Christmas, my true love sent to me\n{}",
-            TWELVE_DAYS_OF_CHRISTMAS[index_of_christmas].0,
-            TWELVE_DAYS_OF_CHRISTMAS[index_of_christmas].1
+            day_of_christmas.0,
+            day_of_christmas.1
         );
-
-        if index_of_christmas > 0 {
-            let mut past_index_of_christmas = index_of_christmas - 1;
+        if i != 0 {
+            let mut past_index_of_christmas = i - 1;
             loop {
                 if past_index_of_christmas == 0 {
                     println!("And {}", TWELVE_DAYS_OF_CHRISTMAS[past_index_of_christmas].1.to_lowercase());
@@ -34,9 +29,8 @@ fn main() {
                 } else {
                     println!("{}", TWELVE_DAYS_OF_CHRISTMAS[past_index_of_christmas].1);
                     past_index_of_christmas -= 1;
-                }
+                } 
             }
         }
-        index_of_christmas += 1;
     }
 }
