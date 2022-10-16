@@ -1,31 +1,6 @@
 use std::io;
-
-#[derive(Debug)]
-enum TemperatureScale {
-    Celsius,
-    Fahrenheit
-}
-
-#[derive(Debug)]
-struct Temperature {
-    degree: i32,
-    scale: TemperatureScale
-}
-
-impl Temperature {
-    fn convert(&mut self) {
-        match self.scale {
-            TemperatureScale::Celsius => {
-                self.scale = TemperatureScale::Fahrenheit;
-                self.degree = (self.degree * 9/5) + 32
-            }
-            TemperatureScale::Fahrenheit => {
-                self.scale = TemperatureScale::Celsius;
-                self.degree = (self.degree - 32) * 5/9
-            }
-        }
-    }
-}
+use temperatures::temperature::Temperature;
+use temperatures::temperature::TemperatureScale;
 
 fn read_line(temp: &mut String) {
     // read in the temp input
@@ -57,10 +32,8 @@ fn main() {
         read_line(&mut temp);
         
         match temp.to_lowercase().trim() {
-            "celsius"  => break TemperatureScale::Celsius,
-            "c"  => break TemperatureScale::Celsius,
-            "fahrenheit" => break TemperatureScale::Fahrenheit,
-            "f" => break TemperatureScale::Fahrenheit,
+            "celsius" | "c" => break TemperatureScale::Celsius,
+            "fahrenheit" | "f" => break TemperatureScale::Fahrenheit,
             _ => println!("Please check your spelling.")
         }
     };
