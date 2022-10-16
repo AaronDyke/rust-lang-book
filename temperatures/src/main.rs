@@ -1,6 +1,5 @@
 use std::io;
-use temperatures::temperature::Temperature;
-use temperatures::temperature::TemperatureScale;
+use temperatures::{Temperature, TemperatureScale};
 
 fn read_line(temp: &mut String) {
     // read in the temp input

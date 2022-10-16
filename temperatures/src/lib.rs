@@ -26,3 +26,6 @@ pub mod temperature {
         }
     }
 }
+
+pub use crate::temperature::Temperature;
+pub use crate::temperature::TemperatureScale;
