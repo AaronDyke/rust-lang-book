@@ -1,25 +1,30 @@
 use std::io;
 
-enum TemperatureType {
+#[derive(Debug)]
+enum TemperatureScale {
     Celsius,
     Fahrenheit
 }
 
-fn fahrenheit_to_celsius(temperature: i32) -> i32 {
-    (temperature - 32) * 5/9
+#[derive(Debug)]
+struct Temperature {
+    degree: i32,
+    scale: TemperatureScale
 }
 
-fn celsius_to_fahrenheit(temperature: i32) -> i32 {
-    (temperature * 9/5) + 32
-}
-
-fn convert_temperature(temperature: i32, temperature_type: TemperatureType) {
-    let (converted_temperature, converted_temperature_type) = match temperature_type {
-        TemperatureType::Celsius => (celsius_to_fahrenheit(temperature), String::from("Fahrenheit")),
-        TemperatureType::Fahrenheit => (fahrenheit_to_celsius(temperature), String::from("Celsius"))
-    };
-
-    println!("Converted temperature is: {converted_temperature} {converted_temperature_type}");
+impl Temperature {
+    fn convert(&mut self) {
+        match self.scale {
+            TemperatureScale::Celsius => {
+                self.scale = TemperatureScale::Fahrenheit;
+                self.degree = (self.degree * 9/5) + 32
+            }
+            TemperatureScale::Fahrenheit => {
+                self.scale = TemperatureScale::Celsius;
+                self.degree = (self.degree - 32) * 5/9
+            }
+        }
+    }
 }
 
 fn read_line(temp: &mut String) {
@@ -31,7 +36,7 @@ fn read_line(temp: &mut String) {
 
 fn main() {
     
-    let temperature: i32 = loop {
+    let degree: i32 = loop {
         let mut temp = String::new();
         println!("Enter a temperature: ");
         
@@ -45,20 +50,27 @@ fn main() {
         };
     };
 
-    let temperature_type = loop {
+    let scale = loop {
         let mut temp = String::new();
         println!("Is that Fahrenheit or Celsius?");
 
         read_line(&mut temp);
         
         match temp.to_lowercase().trim() {
-            "celsius"  => break TemperatureType::Celsius,
-            "c"  => break TemperatureType::Celsius,
-            "fahrenheit" => break TemperatureType::Fahrenheit,
-            "f" => break TemperatureType::Fahrenheit,
+            "celsius"  => break TemperatureScale::Celsius,
+            "c"  => break TemperatureScale::Celsius,
+            "fahrenheit" => break TemperatureScale::Fahrenheit,
+            "f" => break TemperatureScale::Fahrenheit,
             _ => println!("Please check your spelling.")
         }
     };
 
-    convert_temperature(temperature, temperature_type)
+    let mut temperature = Temperature {
+        degree,
+        scale
+    };
+
+    temperature.convert();
+
+    println!("Your converted temperature is {} degrees {:?}", temperature.degree, temperature.scale);
 }
