@@ -1,17 +1,27 @@
 use std::io;
 
-fn convert_temperature(temperature: i32, temperature_type: &str) {
-    let converted_temperature: i32;
-    let converted_temperature_type: String;
-    if temperature_type.eq("Celsius") {
-        converted_temperature = (temperature * 9/5) + 32;
-        converted_temperature_type = "Fahrenheit".to_string();
-    } else {
-        converted_temperature = (temperature - 32) * 5/9;
-        converted_temperature_type = "Celsius".to_string();
-    }
+enum TemperatureType {
+    Celsius,
+    Fahrenheit
+}
 
-    println!("Converted temperature is: {converted_temperature} {converted_temperature_type}")
+fn fahrenheit_to_celsius(temperature: i32) -> i32 {
+    (temperature - 32) * 5/9
+}
+
+fn celsius_to_fahrenheit(temperature: i32) -> i32 {
+    (temperature * 9/5) + 32
+}
+
+fn convert_temperature(temperature: i32, temperature_type: TemperatureType) {
+    // let converted_temperature: i32;
+    // let converted_temperature_type: String;
+    let (converted_temperature, converted_temperature_type) = match temperature_type {
+        TemperatureType::Celsius => (celsius_to_fahrenheit(temperature), "Fahrenheit".to_string()),
+        TemperatureType::Fahrenheit => (fahrenheit_to_celsius(temperature), "Celsius".to_string())
+    };
+
+    println!("Converted temperature is: {converted_temperature} {converted_temperature_type}");
 }
 
 fn main() {
@@ -41,8 +51,8 @@ fn main() {
             .expect("Failed to read line");
         
         match temp.trim() {
-            "Celsius"  => break "Celsius",
-            "Fahrenheit" => break "Fahrenheit",
+            "Celsius"  => break TemperatureType::Celsius,
+            "Fahrenheit" => break TemperatureType::Fahrenheit,
             _ => println!("Please check your spelling.")
         }
     };
