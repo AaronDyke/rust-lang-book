@@ -14,14 +14,19 @@ fn celsius_to_fahrenheit(temperature: i32) -> i32 {
 }
 
 fn convert_temperature(temperature: i32, temperature_type: TemperatureType) {
-    // let converted_temperature: i32;
-    // let converted_temperature_type: String;
     let (converted_temperature, converted_temperature_type) = match temperature_type {
-        TemperatureType::Celsius => (celsius_to_fahrenheit(temperature), "Fahrenheit".to_string()),
-        TemperatureType::Fahrenheit => (fahrenheit_to_celsius(temperature), "Celsius".to_string())
+        TemperatureType::Celsius => (celsius_to_fahrenheit(temperature), String::from("Fahrenheit")),
+        TemperatureType::Fahrenheit => (fahrenheit_to_celsius(temperature), String::from("Celsius"))
     };
 
     println!("Converted temperature is: {converted_temperature} {converted_temperature_type}");
+}
+
+fn read_line(temp: &mut String) {
+    // read in the temp input
+    io::stdin()
+        .read_line(temp)
+        .expect("Failed to read line");
 }
 
 fn main() {
@@ -31,9 +36,7 @@ fn main() {
         println!("Enter a temperature: ");
         
         // read in the temp input
-        io::stdin()
-            .read_line(&mut temp)
-            .expect("Failed to read line");
+        read_line(&mut temp);
 
         // check if temperature is a number
         match temp.trim().parse(){
@@ -46,13 +49,13 @@ fn main() {
         let mut temp = String::new();
         println!("Is that Fahrenheit or Celsius?");
 
-        io::stdin()
-            .read_line(&mut temp)
-            .expect("Failed to read line");
+        read_line(&mut temp);
         
-        match temp.trim() {
-            "Celsius"  => break TemperatureType::Celsius,
-            "Fahrenheit" => break TemperatureType::Fahrenheit,
+        match temp.to_lowercase().trim() {
+            "celsius"  => break TemperatureType::Celsius,
+            "c"  => break TemperatureType::Celsius,
+            "fahrenheit" => break TemperatureType::Fahrenheit,
+            "f" => break TemperatureType::Fahrenheit,
             _ => println!("Please check your spelling.")
         }
     };
